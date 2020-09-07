@@ -1,5 +1,5 @@
 """
-describe program
+Series of functions to do basic encrytion/decryption using elliptic curves for deciding on a key.
 """
 
 import hashlib
@@ -19,18 +19,18 @@ class curve:
         return True
 
 class point:
-    def __init__(self, x, y, c):        #describes the point and the accociated curve being used
+    def __init__(self, x, y, c):        #describes the point and the associated curve being used
         self.x = x
         self.y = y
         self.c = c
 
-    def pointValue(self):                   #Computes the LHS and RHS values of the point.
+    def pointValue(self):               #Computes the LHS and RHS values of the point.
         L = (self.y**2)%((self.c).p)
         R = (self.x**3 + ((self.c).a)*(self.x) + ((self.c).b))%((self.c).p)
         V = [L, R]
         return V
 
-    def pointValid(self):                   #Checks to see if LHS==RHS and therefore confirms the point is on the curve 
+    def pointValid(self):                #Checks to see if LHS==RHS and therefore confirms the point is on the curve 
         V = self.pointValue()               
         if V[0] == V[1]:
             return True
@@ -41,7 +41,7 @@ class point:
         return
         
 
-def eAdd(P, Q):     #adds 2 points by using the slope to find where the line intersects and returns the negation of that point
+def eAdd(P, Q):                         #adds 2 points by using the slope to find where the line intersects and returns the negation of that point
     R = point(0,0,P.c)
     if (P.x == 0 and P.y == 0) and (Q.x == 0 and Q.y == 0):     #(0,0) is the identity
         return P
@@ -49,7 +49,7 @@ def eAdd(P, Q):     #adds 2 points by using the slope to find where the line int
         return Q
     elif Q.x == 0 and Q.y == 0:
         return P
-    elif P == Q:        #in case it is called when double should be
+    elif P == Q:                        #in case it is called when double should be
         R = eDouble(P)
     else:
         i = P.y-Q.y
@@ -60,7 +60,7 @@ def eAdd(P, Q):     #adds 2 points by using the slope to find where the line int
         #R = point((((s**2) - P.x - Q.x) % C.p),((-P.y + s*(P.x - R.x)) % C.p),P.c)
     return R
 
-def eDouble(P): #same as eAdd but finds the tangent line
+def eDouble(P):                         #same as eAdd but finds the tangent line
     R = point(0,0,P.c)
     i = ((3*P.x**2) + P.c.a)            #the slope equation (i/j)
     j = (2*P.y)
@@ -70,19 +70,19 @@ def eDouble(P): #same as eAdd but finds the tangent line
     R.y = (-P.y + s*(P.x - R.x)) % P.c.p
     return R
 
-def eMult(P, s):            #"Double and Add Method" for scalar multiplication
+def eMult(P, s):                        #"Double and Add Method" for scalar multiplication
     Q = point(0,0,P.c)      
     T = point(P.x,P.y,P.c)
-    B = bin(s)[2:][::-1]    #uses 0b representation to know when to add
-    for i in range(len(B)): #1 means add and then double T, 0 means just double T
+    B = bin(s)[2:][::-1]                #uses 0b representation to know when to add
+    for i in range(len(B)):             #1 means add and then double T, 0 means just double T
         if B[i] == '1':
             Q = eAdd(Q, T)
         T = eDouble(T)
-    if s < 0:               #handles if s is negative
+    if s < 0:                           #handles if s is negative
         Q.y = -Q.y
     return Q
-                                #start of keygen operations
-def curveInput():               #Creates a curve object with the inputed values and validates that it forms a group
+#start of keygen operations
+def curveInput():                       #Creates a curve object with the inputed values and validates that it forms a group
     C = curve(0,0,0)
     C.a = int(input("enter the a value for curve:"))
     C.b = int(input("enter the b value for curve:"))
@@ -93,13 +93,13 @@ def curveInput():               #Creates a curve object with the inputed values 
         return C
     return C
 
-def pointInput(C):              #creates a point for the passed through curve   
+def pointInput(C):                      #creates a point for the passed through curve   
     P = point(0,0,C)
     P.x = int(input("enter the x value for point:"))
     P.y = int(input("enter the y value for point:"))
     return P
 
-def pointInputValid(C):         #creates a point and confirms its valid
+def pointInputValid(C):                 #creates a point and confirms its valid
     P = point(0,0,C)
     P.x = int(input("enter the x value for point:"))
     P.y = int(input("enter the y value for point:"))
@@ -114,7 +114,7 @@ def keyStart(P,n):
     Q.pointDisplay()
     return Q
 
-def keyGen():   #remember only one input point for the 2 different ints n
+def keyGen():                           #remember only one input point for the 2 different ints n
     n = int(input("enter secret int n:"))
     P = point(0,0,C)
     P = keyStart(P,n)
@@ -123,10 +123,10 @@ def keyGen():   #remember only one input point for the 2 different ints n
     return P
     #Q = point(0,0,C)
     #Q = keyStart(Q,n)
-    #Q = eMult(P,n)              #Only the x value is the key.
+    #Q = eMult(P,n)                     #Only the x value is the key.
     #return Q
 
-def modInv(a, m):                   #modular inverse
+def modInv(a, m):                       #modular inverse
     a = a % m; 
     for x in range(1, m) : 
         if ((a * x) % m == 1) : 
@@ -146,7 +146,7 @@ def eElgamalEncrypt(P,Q):
 def eElgamalDecrypt(CT,nA):
     M = eAdd(CT[1], eMult(eMult(CT[0],nA),-1))
     return M
-
+#below is still wip
 def ECDSAkey(G,q,C):
     s = int(input("Input secret signing key 1 < s < q-1: "))
     #while s > (q-1):
