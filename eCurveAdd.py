@@ -30,7 +30,7 @@ class point:
         V = [L, R]
         return V
 
-    def pointValid(self):                #Checks to see if LHS==RHS and therefore confirms the point is on the curve 
+    def pointValid(self):               #Checks to see if LHS==RHS and therefore confirms the point is on the curve 
         V = self.pointValue()               
         if V[0] == V[1]:
             return True
@@ -61,7 +61,7 @@ def eAdd(P, Q):                         #adds 2 points by using the slope to fin
 
 def eDouble(P):                         #same as eAdd but finds the tangent line
     R = point(0, 0, P.c)
-    i = ( (3 * P.x ** 2) + P.c.a)            #the slope equation (i/j)
+    i = ( (3 * P.x ** 2) + P.c.a)       #the slope equation (i/j)
     j = (2 * P.y)
     s = (i * modInv(j, P.c.p) ) % P.c.p
     R.x = ( (s ** 2) - 2 * P.x) % P.c.p
@@ -72,7 +72,7 @@ def eMult(P, s):                        #"Double and Add Method" for scalar mult
     Q = point(0, 0, P.c)      
     T = point(P.x, P.y, P.c)
     B = bin(s)[2:][::-1]                #uses 0b representation to know when to add
-    for i in range( len(B) ):             #1 means add and then double T, 0 means just double T
+    for i in range( len(B) ):           #1 means add and then double T, 0 means just double T
         if B[i] == '1':
             Q = eAdd(Q, T)
         T = eDouble(T)
