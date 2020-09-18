@@ -1,5 +1,7 @@
 """
-Series of functions to do basic encrytion/decryption using elliptic curves for deciding on a key.
+Series of functions to do basic encrytion/decryption using elliptical curves for deciding on a key.
+I was working off of this book: An Introduction to Mathematical Cryptography (Undergraduate Texts in Mathematics) by Jeffrey Hoffstein
+https://www.amazon.com/Introduction-Mathematical-Cryptography-Undergraduate-Mathematics/dp/1493939386
 """
 
 import hashlib
