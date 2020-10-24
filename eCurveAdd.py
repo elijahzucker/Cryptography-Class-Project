@@ -1,5 +1,6 @@
 """
 Series of functions to do basic encrytion/decryption using elliptical curves for deciding on a key.
+This assumes an understanding of elliptical curves and their use in cryptography.
 I was working off of this book: An Introduction to Mathematical Cryptography (Undergraduate Texts in Mathematics) by Jeffrey Hoffstein
 https://www.amazon.com/Introduction-Mathematical-Cryptography-Undergraduate-Mathematics/dp/1493939386
 """
