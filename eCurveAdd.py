@@ -8,53 +8,67 @@ https://www.amazon.com/Introduction-Mathematical-Cryptography-Undergraduate-Math
 import hashlib
 
 class curve:
+    """
+    This class contains the information that needed to
+    identify any specific curve and its helper functions.
+    """
     def __init__(self, a, b, p):        #Weierstrass curve form
-        self.a = a                      #stores the a and b integers and the prime that forms the field
+        # a & b are the curve integers and p is the prime
+        self.a = a                      
         self.b = b
         self.p = p
 
-    def whatC(self):                    #prints curve
+    def whatC(self):                    
+        #prints curve equation
         print("Curve: y^2 mod", self.p, "= x^3 +", self.a, "x +", self.b, "mod", self.p,)
 
-    def isGroup(self):                  #confirms the curve forms a group over the field
+    def isGroup(self):                  
+        #returns true if curve forms a group over the field
         if ( (4 * self.a ** 3) + (27 * self.b ** 2) ) % self.p == 0:
             return False
         return True
 
 class point:
-    def __init__(self, x, y, c):        #describes the point and the associated curve being used
+    """
+    Class for storing specific points on a curve
+    """
+    def __init__(self, x, y, c): 
+        # x & y are the values of the point and c is the curve object they are on
         self.x = x
         self.y = y
         self.c = c
 
-    def pointValue(self):               #Computes the LHS and RHS values of the point.
+    def pointValue(self):               
+        #Computes the LHS and RHS values of the point.
         L = (self.y ** 2) % ((self.c).p)
         R = (self.x ** 3 + ( (self.c).a ) * (self.x) + ( (self.c).b )) % ( (self.c).p )
         V = [L, R]
         return V
 
-    def pointValid(self):               #Checks to see if LHS==RHS and therefore confirms the point is on the curve 
+    def pointValid(self):               
+        #Checks to see if LHS==RHS to confirm the point is on the curve 
         V = self.pointValue()               
         if V[0] == V[1]:
             return True
         return False
 
     def pointDisplay(self):
+        #Prints the value of the point
         print("x = ", self.x, " y = ", self.y)
         return
         
 
 def eAdd(P, Q):                         #adds 2 points by using the slope to find where the line intersects and returns the negation of that point
-    R = point(0,0,P.c)
+    R = point(0,0,P.c)      #creates point object to store result
     if (P.x == 0 and P.y == 0) and (Q.x == 0 and Q.y == 0):     #(0,0) is the identity
-        return P
+        return P                       #returns the identity
     elif P.x == 0 and P.y == 0:
         return Q
     elif Q.x == 0 and Q.y == 0:
         return P
     elif P == Q:                        #in case it is called when double should be
         R = eDouble(P)
-    else:
+    else:      #this preforms the actual addition
         i = P.y-Q.y
         j = P.x-Q.x
         s = (i * modInv(j, P.c.p) ) % P.c.p
@@ -62,7 +76,7 @@ def eAdd(P, Q):                         #adds 2 points by using the slope to fin
         R.y = ( (-P.y + s * (P.x - R.x) ) % P.c.p)
     return R
 
-def eDouble(P):                         #same as eAdd but finds the tangent line
+def eDouble(P):                         #adding P + P by using a tangent line
     R = point(0, 0, P.c)
     i = ( (3 * P.x ** 2) + P.c.a)       #the slope equation (i/j)
     j = (2 * P.y)
