@@ -59,6 +59,11 @@ class point:
         
 
 def eAdd(P, Q):                         #adds 2 points by using the slope to find where the line intersects and returns the negation of that point
+    """
+    Takes 2 point objects, P & Q, and adds them together,
+    It handles any situations where one point is the identity (0,0)
+    It also calls a seperate function for whenever P = Q
+    """
     R = point(0,0,P.c)      #creates point object to store result
     if (P.x == 0 and P.y == 0) and (Q.x == 0 and Q.y == 0):     #(0,0) is the identity
         return P                       #returns the identity
@@ -77,6 +82,10 @@ def eAdd(P, Q):                         #adds 2 points by using the slope to fin
     return R
 
 def eDouble(P):                         #adding P + P by using a tangent line
+    """
+    This is elliptical addition for when both elements are equal,
+    this is needed since addition works off of the slope between points
+    """
     R = point(0, 0, P.c)
     i = ( (3 * P.x ** 2) + P.c.a)       #the slope equation (i/j)
     j = (2 * P.y)
@@ -85,7 +94,12 @@ def eDouble(P):                         #adding P + P by using a tangent line
     R.y = (-P.y + s * (P.x - R.x) ) % P.c.p
     return R
 
-def eMult(P, s):                        #"Double and Add Method" for scalar multiplication
+def eMult(P, s):                        
+    """
+    Uses the "Double and Add Method" for scalar multiplication
+    Converting the scaler into binary we use the indexes that 
+    equal 1 as a flag to to know when add instead of just doubling
+    """
     Q = point(0, 0, P.c)      
     T = point(P.x, P.y, P.c)
     B = bin(s)[2:][::-1]                #uses 0b representation to know when to add
