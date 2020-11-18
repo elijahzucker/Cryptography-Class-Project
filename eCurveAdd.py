@@ -60,6 +60,7 @@ class point:
 
 def eAdd(P, Q):                         #adds 2 points by using the slope to find where the line intersects and returns the negation of that point
     """
+    Param P & Q point objects
     Takes 2 point objects, P & Q, and adds them together,
     It handles any situations where one point is the identity (0,0)
     It also calls a seperate function for whenever P = Q
@@ -83,6 +84,7 @@ def eAdd(P, Q):                         #adds 2 points by using the slope to fin
 
 def eDouble(P):                         #adding P + P by using a tangent line
     """
+    Param P point object
     This is elliptical addition for when both elements are equal,
     this is needed since addition works off of the slope between points
     """
@@ -96,6 +98,8 @@ def eDouble(P):                         #adding P + P by using a tangent line
 
 def eMult(P, s):                        
     """
+    Param P point object
+    Param s is a scaler multiplier
     Uses the "Double and Add Method" for scalar multiplication
     Converting the scaler into binary we use the indexes that 
     equal 1 as a flag to to know when add instead of just doubling
@@ -112,7 +116,10 @@ def eMult(P, s):
     return Q
 
 #start of keygen operations
-def curveInput():                       #Creates a curve object with the inputed values and validates that it forms a group
+def curveInput():                       
+    """
+    Creates a curve object with the inputed values and validates that it forms a group
+    """
     C = curve(0, 0, 0)
     C.a = int( input("enter the a value for curve:") )
     C.b = int( input("enter the b value for curve:") )
@@ -123,13 +130,22 @@ def curveInput():                       #Creates a curve object with the inputed
         return C
     return C
 
-def pointInput(C):                      #creates a point for the passed through curve   
+def pointInput(C):                      
+    """
+    Param C is a Curve object
+    the function prompts for the values of a point
+    and then creates a point object on that curve
+    """
     P = point(0, 0, C)
     P.x = int( input("enter the x value for point:") )
     P.y = int( input("enter the y value for point:") )
     return P
 
-def pointInputValid(C):                 #creates a point and confirms its valid
+def pointInputValid(C):       
+    """
+    Param C is a Curve object
+    creates a point and confirms its valid
+    """
     P = point(0, 0, C)
     P.x = int( input("enter the x value for point:") )
     P.y = int( input("enter the y value for point:") )
